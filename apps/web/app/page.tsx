@@ -1,6 +1,58 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useState } from "react";
+
+import { apiBaseUrl } from "../lib/config";
+
+type BalanceItem = {
+  asset: string;
+  available: string | number;
+};
 
 export default function Home() {
+  const [balances, setBalances] = useState<BalanceItem[] | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isActive = true;
+
+    const loadBalances = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/wallet/balance`);
+
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+
+        const data = (await response.json()) as BalanceItem[];
+
+        if (isActive) {
+          setBalances(data);
+          setError(null);
+        }
+      } catch (caught) {
+        if (isActive) {
+          const message =
+            caught instanceof Error ? caught.message : "Unable to load balance";
+          setError(message);
+          setBalances(null);
+        }
+      } finally {
+        if (isActive) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadBalances();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
@@ -34,6 +86,47 @@ export default function Home() {
             center.
           </p>
         </div>
+        <section className="w-full rounded-2xl border border-black/[.08] px-6 py-5 text-left text-sm text-zinc-700 dark:border-white/[.145] dark:text-zinc-300">
+          <div className="flex items-center justify-between">
+            <h2 className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
+              Balance
+            </h2>
+            <span className="text-xs text-zinc-500 dark:text-zinc-400">
+              {isLoading ? "Loading" : "Updated"}
+            </span>
+          </div>
+          <div className="mt-4">
+            {isLoading ? (
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                Fetching balances...
+              </p>
+            ) : error ? (
+              <p className="text-sm text-red-600 dark:text-red-400">
+                {error}
+              </p>
+            ) : balances && balances.length > 0 ? (
+              <ul className="space-y-3">
+                {balances.map((balance) => (
+                  <li
+                    key={balance.asset}
+                    className="flex items-center justify-between"
+                  >
+                    <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                      {balance.asset}
+                    </span>
+                    <span className="text-sm text-zinc-600 dark:text-zinc-300">
+                      {balance.available}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+                No balances available.
+              </p>
+            )}
+          </div>
+        </section>
         <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
           <a
             className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
