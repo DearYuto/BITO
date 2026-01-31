@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+**/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -16,13 +17,28 @@
 # next.js
 /.next/
 /out/
+**/.next/
+**/out/
+
+# turborepo
+/.turbo/
+**/.turbo/
+dist/
+**/dist/
 
 # production
 /build
+**/build/
 
 # misc
 .DS_Store
 *.pem
+.cache/
+.eslintcache
+.idea/
+.swc/
+.vscode/
+*.log
 
 # debug
 npm-debug.log*
