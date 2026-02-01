@@ -58,6 +58,7 @@
       "dependencies": {
         "@headlessui/react": "^2.2.9",
         "@repo/types": "workspace:*",
+        "@repo/utils": "workspace:*",
         "@tanstack/react-query": "^5.90.20",
         "next": "16.1.6",
         "next-intl": "^4.8.1",
@@ -83,6 +84,10 @@
     },
     "packages/types": {
       "name": "@repo/types",
+      "version": "0.0.0",
+    },
+    "packages/utils": {
+      "name": "@repo/utils",
       "version": "0.0.0",
     },
   },
@@ -598,6 +603,8 @@
     "@repo/config": ["@repo/config@workspace:packages/config"],
 
     "@repo/types": ["@repo/types@workspace:packages/types"],
+
+    "@repo/utils": ["@repo/utils@workspace:packages/utils"],
 
     "@rtsao/scc": ["@rtsao/scc@1.1.0", "", {}, "sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g=="],
 
