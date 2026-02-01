@@ -1,15 +1,9 @@
 import type { Ticker } from "@/lib/hooks/useMarketData";
+import { formatNumeric } from "@repo/utils";
 import { SurfaceCard } from "@/components/SurfaceCard";
 
-const formatValue = (value: string | number) => {
-  if (typeof value === "number") {
-    return value.toLocaleString(undefined, {
-      maximumFractionDigits: 8,
-    });
-  }
-
-  return value;
-};
+const formatValue = (value: string | number) =>
+  formatNumeric(value, { maximumFractionDigits: 8 });
 
 type TickerSectionProps = {
   ticker: Ticker | null;

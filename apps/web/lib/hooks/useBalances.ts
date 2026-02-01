@@ -12,6 +12,7 @@ type BalancesState = {
 };
 
 export const useBalances = (): BalancesState => {
+
   const { data, isLoading, error } = useWalletControllerGetBalance();
   const payload = data?.data as { balances?: BalanceItem[] } | undefined;
   const balances = payload?.balances ?? null;
