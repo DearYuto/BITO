@@ -1,4 +1,5 @@
 import type { Orderbook } from "@/lib/hooks/useMarketData";
+import { SurfaceCard } from "@/components/SurfaceCard";
 
 const formatValue = (value: string | number) => {
   if (typeof value === "number") {
@@ -22,70 +23,74 @@ export const OrderbookSection = ({
   error,
 }: OrderbookSectionProps) => (
   <section className="grid gap-6 lg:grid-cols-2">
-    <div className="rounded-2xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.145] dark:bg-black">
+    <SurfaceCard className="rounded-2xl p-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold">Bids</h2>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        <h2 className="text-base font-semibold text-[var(--color-text-main)]">
+          Bids
+        </h2>
+        <span className="text-xs text-[var(--color-text-sub)]">
           {isLoading ? "Loading" : "Depth"}
         </span>
       </div>
       {isLoading ? (
-        <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-4 text-sm text-[var(--color-text-sub)]">
           Loading bids...
         </p>
       ) : error ? (
-        <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="mt-4 text-sm text-red-400">{error}</p>
       ) : orderbook?.bids?.length ? (
         <ul className="mt-4 space-y-3 text-sm">
           {orderbook.bids.map((bid, index) => (
             <li key={`bid-${index}`} className="flex justify-between">
-              <span className="text-zinc-900 dark:text-zinc-100">
+              <span className="text-[var(--color-text-main)]">
                 {formatValue(bid.price)}
               </span>
-              <span className="text-zinc-500 dark:text-zinc-400">
+              <span className="text-[var(--color-text-sub)]">
                 {formatValue(bid.size)}
               </span>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-4 text-sm text-[var(--color-text-sub)]">
           No bid data available.
         </p>
       )}
-    </div>
+    </SurfaceCard>
 
-    <div className="rounded-2xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.145] dark:bg-black">
+    <SurfaceCard className="rounded-2xl p-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-semibold">Asks</h2>
-        <span className="text-xs text-zinc-500 dark:text-zinc-400">
+        <h2 className="text-base font-semibold text-[var(--color-text-main)]">
+          Asks
+        </h2>
+        <span className="text-xs text-[var(--color-text-sub)]">
           {isLoading ? "Loading" : "Depth"}
         </span>
       </div>
       {isLoading ? (
-        <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-4 text-sm text-[var(--color-text-sub)]">
           Loading asks...
         </p>
       ) : error ? (
-        <p className="mt-4 text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="mt-4 text-sm text-red-400">{error}</p>
       ) : orderbook?.asks?.length ? (
         <ul className="mt-4 space-y-3 text-sm">
           {orderbook.asks.map((ask, index) => (
             <li key={`ask-${index}`} className="flex justify-between">
-              <span className="text-zinc-900 dark:text-zinc-100">
+              <span className="text-[var(--color-text-main)]">
                 {formatValue(ask.price)}
               </span>
-              <span className="text-zinc-500 dark:text-zinc-400">
+              <span className="text-[var(--color-text-sub)]">
                 {formatValue(ask.size)}
               </span>
             </li>
           ))}
         </ul>
       ) : (
-        <p className="mt-4 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-4 text-sm text-[var(--color-text-sub)]">
           No ask data available.
         </p>
       )}
-    </div>
+    </SurfaceCard>
   </section>
 );

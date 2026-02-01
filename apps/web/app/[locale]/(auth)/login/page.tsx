@@ -1,10 +1,13 @@
 import LoginCard from "@/app/[locale]/(auth)/login/components/login-card";
 import LoginForm from "@/app/[locale]/(auth)/login/components/login-form";
+import { PageShell } from "@/components/PageShell";
 
 export default function LoginPage() {
   return (
-    <LoginCard>
-      <LoginForm />
-    </LoginCard>
+    <PageShell className="flex items-center justify-center px-4">
+      <LoginCard>
+        <LoginForm />
+      </LoginCard>
+    </PageShell>
   );
 }

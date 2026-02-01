@@ -1,4 +1,5 @@
 import type { Ticker } from "@/lib/hooks/useMarketData";
+import { SurfaceCard } from "@/components/SurfaceCard";
 
 const formatValue = (value: string | number) => {
   if (typeof value === "number") {
@@ -21,56 +22,58 @@ export const TickerSection = ({
   isLoading,
   error,
 }: TickerSectionProps) => (
-  <section className="grid gap-6 rounded-2xl border border-black/[.08] bg-white p-6 shadow-sm dark:border-white/[.145] dark:bg-black">
+  <SurfaceCard className="grid gap-6 p-6">
     <div className="flex items-center justify-between">
-      <h2 className="text-base font-semibold">Ticker</h2>
-      <span className="text-xs text-zinc-500 dark:text-zinc-400">
+      <h2 className="text-base font-semibold text-[var(--color-text-main)]">
+        Ticker
+      </h2>
+      <span className="text-xs text-[var(--color-text-sub)]">
         {isLoading ? "Fetching" : "Updated"}
       </span>
     </div>
     {isLoading ? (
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">
-        Loading ticker...
-      </p>
+      <p className="text-sm text-[var(--color-text-sub)]">Loading ticker...</p>
     ) : error ? (
-      <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+      <p className="text-sm text-red-400">{error}</p>
     ) : ticker ? (
       <div className="grid gap-4 sm:grid-cols-4">
-        <div className="rounded-xl border border-black/[.08] px-4 py-3 dark:border-white/[.145]">
-          <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+        <div className="rounded-2xl border border-[var(--color-border-soft)] bg-[var(--color-surface-muted)] px-4 py-3">
+          <p className="text-xs uppercase tracking-wide text-[var(--color-text-sub)]">
             Price
           </p>
-          <p className="mt-2 text-lg font-semibold">
+          <p className="mt-2 text-lg font-semibold text-[var(--color-text-main)]">
             {formatValue(ticker.price)}
           </p>
         </div>
-        <div className="rounded-xl border border-black/[.08] px-4 py-3 dark:border-white/[.145]">
-          <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+        <div className="rounded-2xl border border-[var(--color-border-soft)] bg-[var(--color-surface-muted)] px-4 py-3">
+          <p className="text-xs uppercase tracking-wide text-[var(--color-text-sub)]">
             24h Change
           </p>
-          <p className="mt-2 text-lg font-semibold">
+          <p className="mt-2 text-lg font-semibold text-[var(--color-text-main)]">
             {formatValue(ticker.change24h)}
           </p>
         </div>
-        <div className="rounded-xl border border-black/[.08] px-4 py-3 dark:border-white/[.145]">
-          <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+        <div className="rounded-2xl border border-[var(--color-border-soft)] bg-[var(--color-surface-muted)] px-4 py-3">
+          <p className="text-xs uppercase tracking-wide text-[var(--color-text-sub)]">
             24h Volume
           </p>
-          <p className="mt-2 text-lg font-semibold">
+          <p className="mt-2 text-lg font-semibold text-[var(--color-text-main)]">
             {formatValue(ticker.volume24h)}
           </p>
         </div>
-        <div className="rounded-xl border border-black/[.08] px-4 py-3 dark:border-white/[.145]">
-          <p className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
+        <div className="rounded-2xl border border-[var(--color-border-soft)] bg-[var(--color-surface-muted)] px-4 py-3">
+          <p className="text-xs uppercase tracking-wide text-[var(--color-text-sub)]">
             Symbol
           </p>
-          <p className="mt-2 text-lg font-semibold">{ticker.symbol}</p>
+          <p className="mt-2 text-lg font-semibold text-[var(--color-text-main)]">
+            {ticker.symbol}
+          </p>
         </div>
       </div>
     ) : (
-      <p className="text-sm text-zinc-500 dark:text-zinc-400">
+      <p className="text-sm text-[var(--color-text-sub)]">
         No ticker data available.
       </p>
     )}
-  </section>
+  </SurfaceCard>
 );
