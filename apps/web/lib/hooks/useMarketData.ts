@@ -25,15 +25,27 @@ type MarketDataState = {
   orderbook: Orderbook | null;
   isLoading: boolean;
   error: string | null;
+  lastUpdated: number | null;
 };
 
 export const useMarketData = (): MarketDataState => {
-  const tickerQuery = useMarketControllerGetTicker();
-  const orderbookQuery = useMarketControllerGetOrderbook();
+  const tickerQuery = useMarketControllerGetTicker({
+    query: {
+      refetchInterval: 3000,
+    },
+  });
+  const orderbookQuery = useMarketControllerGetOrderbook({
+    query: {
+      refetchInterval: 5000,
+    },
+  });
   const isLoading = tickerQuery.isLoading || orderbookQuery.isLoading;
   const ticker = (tickerQuery.data?.data as Ticker | undefined) ?? null;
   const orderbook =
     (orderbookQuery.data?.data as Orderbook | undefined) ?? null;
+  const lastUpdated = tickerQuery.dataUpdatedAt
+    ? tickerQuery.dataUpdatedAt
+    : null;
   const queryError = tickerQuery.error ?? orderbookQuery.error;
   const message = queryError
     ? queryError instanceof Error
@@ -41,5 +53,5 @@ export const useMarketData = (): MarketDataState => {
       : "Unable to load market"
     : null;
 
-  return { ticker, orderbook, isLoading, error: message };
+  return { ticker, orderbook, isLoading, error: message, lastUpdated };
 };

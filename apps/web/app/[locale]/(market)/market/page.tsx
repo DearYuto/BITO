@@ -1,13 +1,14 @@
 "use client";
 
 import { MarketHeader } from "@/app/[locale]/(market)/market/components/MarketHeader";
+import { LivePriceSection } from "@/app/[locale]/(market)/market/components/LivePriceSection";
 import { OrderbookSection } from "@/app/[locale]/(market)/market/components/OrderbookSection";
 import { TickerSection } from "@/app/[locale]/(market)/market/components/TickerSection";
 import { PageShell } from "@/components/PageShell";
 import { useMarketData } from "@/lib/hooks/useMarketData";
 
 export default function MarketPage() {
-  const { ticker, orderbook, isLoading, error } = useMarketData();
+  const { ticker, orderbook, isLoading, error, lastUpdated } = useMarketData();
 
   return (
     <PageShell>
@@ -15,6 +16,13 @@ export default function MarketPage() {
         <MarketHeader
           title={ticker?.symbol ?? "Market Overview"}
           isLoading={isLoading}
+        />
+
+        <LivePriceSection
+          ticker={ticker}
+          isLoading={isLoading}
+          error={error}
+          lastUpdated={lastUpdated}
         />
 
         <TickerSection ticker={ticker} isLoading={isLoading} error={error} />
