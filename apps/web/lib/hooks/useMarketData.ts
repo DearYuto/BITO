@@ -1,24 +1,12 @@
+import { useQuery, type QueryFunctionContext } from "@tanstack/react-query";
 import {
-  useMarketControllerGetOrderbook,
-  useMarketControllerGetTicker,
-} from "@/lib/api/generated";
-
-export type Ticker = {
-  symbol: string;
-  price: string | number;
-  change24h: string | number;
-  volume24h: string | number;
-};
-
-export type OrderbookEntry = {
-  price: string | number;
-  size: string | number;
-};
-
-export type Orderbook = {
-  bids: OrderbookEntry[];
-  asks: OrderbookEntry[];
-};
+  fetchOrderbook,
+  fetchTicker,
+  marketQueryKeys,
+  type MarketSource,
+  type Orderbook,
+  type Ticker,
+} from "@/lib/api/market";
 
 type MarketDataState = {
   ticker: Ticker | null;
@@ -28,21 +16,21 @@ type MarketDataState = {
   lastUpdated: number | null;
 };
 
-export const useMarketData = (): MarketDataState => {
-  const tickerQuery = useMarketControllerGetTicker({
-    query: {
-      refetchInterval: 3000,
-    },
+export const useMarketData = (source: MarketSource): MarketDataState => {
+  const tickerQuery = useQuery({
+    queryKey: marketQueryKeys.ticker(source),
+    queryFn: ({ signal }: QueryFunctionContext) => fetchTicker(source, signal),
+    refetchInterval: 3000,
   });
-  const orderbookQuery = useMarketControllerGetOrderbook({
-    query: {
-      refetchInterval: 5000,
-    },
+  const orderbookQuery = useQuery({
+    queryKey: marketQueryKeys.orderbook(source),
+    queryFn: ({ signal }: QueryFunctionContext) =>
+      fetchOrderbook(source, signal),
+    refetchInterval: 5000,
   });
   const isLoading = tickerQuery.isLoading || orderbookQuery.isLoading;
-  const ticker = (tickerQuery.data?.data as Ticker | undefined) ?? null;
-  const orderbook =
-    (orderbookQuery.data?.data as Orderbook | undefined) ?? null;
+  const ticker = tickerQuery.data ?? null;
+  const orderbook = orderbookQuery.data ?? null;
   const lastUpdated = tickerQuery.dataUpdatedAt
     ? tickerQuery.dataUpdatedAt
     : null;

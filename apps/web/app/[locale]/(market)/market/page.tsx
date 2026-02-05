@@ -1,14 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { MarketHeader } from "@/app/[locale]/(market)/market/components/MarketHeader";
+import { BtcChartSection } from "@/app/[locale]/(market)/market/components/BtcChartSection";
 import { LivePriceSection } from "@/app/[locale]/(market)/market/components/LivePriceSection";
 import { OrderbookSection } from "@/app/[locale]/(market)/market/components/OrderbookSection";
 import { TickerSection } from "@/app/[locale]/(market)/market/components/TickerSection";
 import { PageShell } from "@/components/PageShell";
+import { type MarketSource } from "@/lib/api/market";
 import { useMarketData } from "@/lib/hooks/useMarketData";
 
 export default function MarketPage() {
-  const { ticker, orderbook, isLoading, error, lastUpdated } = useMarketData();
+  const [source, setSource] = useState<MarketSource>("BINANCE");
+  const { ticker, orderbook, isLoading, error, lastUpdated } =
+    useMarketData(source);
 
   return (
     <PageShell>
@@ -17,6 +22,8 @@ export default function MarketPage() {
           title={ticker?.symbol ?? "Market Overview"}
           isLoading={isLoading}
         />
+
+        <BtcChartSection source={source} onSourceChange={setSource} />
 
         <LivePriceSection
           ticker={ticker}
