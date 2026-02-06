@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { MarketHeader } from "@/app/[locale]/(market)/market/components/MarketHeader";
-import { BtcChartSection } from "@/app/[locale]/(market)/market/components/BtcChartSection";
-import { LivePriceSection } from "@/app/[locale]/(market)/market/components/LivePriceSection";
-import { OrderbookSection } from "@/app/[locale]/(market)/market/components/OrderbookSection";
-import { TickerSection } from "@/app/[locale]/(market)/market/components/TickerSection";
-import { PageShell } from "@/components/PageShell";
+import { MarketHeader } from "@/app/[locale]/(market)/market/components/market-header";
+import { BtcChartSection } from "@/app/[locale]/(market)/market/components/btc-chart-section";
+import { LivePriceSection } from "@/app/[locale]/(market)/market/components/live-price-section";
+import { OrderbookSection } from "@/app/[locale]/(market)/market/components/orderbook-section";
+import { TickerSection } from "@/app/[locale]/(market)/market/components/ticker-section";
+import { PageShell } from "@/components/page-shell";
 import { type MarketSource } from "@/lib/api/market";
 import { useMarketData } from "@/lib/hooks/useMarketData";
 import { useMarketSocket } from "@/lib/hooks/useMarketSocket";

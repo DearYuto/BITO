@@ -1,6 +1,6 @@
 import type { Ticker } from "@/lib/hooks/useMarketData";
 import { formatNumeric } from "@repo/utils";
-import { SurfaceCard } from "@/components/SurfaceCard";
+import { SurfaceCard } from "@/components/surface-card";
 
 const formatValue = (value: string | number) =>
   formatNumeric(value, { maximumFractionDigits: 8 });

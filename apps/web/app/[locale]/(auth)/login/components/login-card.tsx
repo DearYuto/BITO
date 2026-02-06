@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { SurfaceCard } from "@/components/SurfaceCard";
+import { SurfaceCard } from "@/components/surface-card";
 
 type LoginCardProps = {
   children: ReactNode;

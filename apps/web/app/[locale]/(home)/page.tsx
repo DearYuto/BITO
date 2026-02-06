@@ -1,9 +1,9 @@
 "use client";
 
-import { BalanceCard } from "@/app/[locale]/(home)/components/BalanceCard";
-import { HomeHeader } from "@/app/[locale]/(home)/components/HomeHeader";
-import { HomeHero } from "@/app/[locale]/(home)/components/HomeHero";
-import { HomeSummary } from "@/app/[locale]/(home)/components/HomeSummary";
+import { BalanceCard } from "@/app/[locale]/(home)/components/balance-card";
+import { HomeHeader } from "@/app/[locale]/(home)/components/home-header";
+import { HomeHero } from "@/app/[locale]/(home)/components/home-hero";
+import { HomeSummary } from "@/app/[locale]/(home)/components/home-summary";
 import { useBalances } from "@/lib/hooks/useBalances";
 
 export default function Home() {

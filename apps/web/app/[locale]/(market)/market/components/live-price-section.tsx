@@ -1,5 +1,5 @@
 import type { Ticker } from "@/lib/hooks/useMarketData";
-import { SurfaceCard } from "@/components/SurfaceCard";
+import { SurfaceCard } from "@/components/surface-card";
 import { formatNumeric } from "@repo/utils";
 
 const formatValue = (value: string | number) =>

@@ -13,7 +13,7 @@ import {
   type ISeriesApi,
   type UTCTimestamp,
 } from "lightweight-charts";
-import { SurfaceCard } from "@/components/SurfaceCard";
+import { SurfaceCard } from "@/components/surface-card";
 import {
   fetchKlines,
   fetchTicker,
