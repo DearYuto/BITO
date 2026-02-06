@@ -1,18 +1,26 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { useQuery, type QueryFunctionContext } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  type QueryFunctionContext,
+} from "@tanstack/react-query";
 import {
   createChart,
   CandlestickSeries,
+  type CandlestickData,
   type ISeriesApi,
+  type UTCTimestamp,
 } from "lightweight-charts";
 import { SurfaceCard } from "@/components/SurfaceCard";
 import {
   fetchKlines,
+  fetchTicker,
   marketRefresh,
   marketQueryKeys,
   type MarketSource,
+  type Ticker,
 } from "@/lib/api/market";
 
 type BtcChartSectionProps = {
@@ -27,12 +35,21 @@ export const BtcChartSection = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<ReturnType<typeof createChart> | null>(null);
   const seriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
+  const lastBarRef = useRef<CandlestickData | null>(null);
+  const queryClient = useQueryClient();
   const chartQuery = useQuery({
     queryKey: marketQueryKeys.klines(source),
     queryFn: ({ signal }: QueryFunctionContext) => fetchKlines(source, signal),
     refetchInterval: marketRefresh.klinesMs,
     staleTime: marketRefresh.staleTimeMs,
     refetchOnWindowFocus: true,
+  });
+  const tickerQuery = useQuery<Ticker>({
+    queryKey: marketQueryKeys.ticker(source),
+    queryFn: ({ signal }: QueryFunctionContext) => fetchTicker(source, signal),
+    enabled: false,
+    initialData: () =>
+      queryClient.getQueryData<Ticker>(marketQueryKeys.ticker(source)),
   });
 
   const chartOptions = useMemo(
@@ -93,8 +110,42 @@ export const BtcChartSection = ({
   useEffect(() => {
     if (!seriesRef.current || !chartQuery.data?.length) return;
     seriesRef.current.setData(chartQuery.data);
+    lastBarRef.current = chartQuery.data[chartQuery.data.length - 1] ?? null;
     chartRef.current?.timeScale().fitContent();
   }, [chartQuery.data]);
+
+  useEffect(() => {
+    lastBarRef.current = null;
+  }, [source]);
+
+  useEffect(() => {
+    if (!seriesRef.current || !tickerQuery.data || !lastBarRef.current) return;
+    const latestPrice = Number(tickerQuery.data.price);
+    if (!Number.isFinite(latestPrice)) return;
+
+    const currentTime = Math.floor(Date.now() / 1000) as UTCTimestamp;
+    const intervalBoundary = (currentTime - (currentTime % 60)) as UTCTimestamp;
+    const lastBarTime = Number(lastBarRef.current.time);
+    const shouldStartNewBar = lastBarTime < intervalBoundary;
+
+    const nextBar: CandlestickData = shouldStartNewBar
+      ? {
+          time: currentTime,
+          open: latestPrice,
+          high: latestPrice,
+          low: latestPrice,
+          close: latestPrice,
+        }
+      : {
+          ...lastBarRef.current,
+          high: Math.max(lastBarRef.current.high, latestPrice),
+          low: Math.min(lastBarRef.current.low, latestPrice),
+          close: latestPrice,
+        };
+
+    lastBarRef.current = nextBar;
+    seriesRef.current.update(nextBar);
+  }, [tickerQuery.data]);
 
   return (
     <SurfaceCard className="grid gap-4 p-6">
