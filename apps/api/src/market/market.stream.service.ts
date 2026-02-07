@@ -120,7 +120,7 @@ export class MarketStreamService {
     const url = new URL(UPBIT_TICKER_BASE_URL);
     url.searchParams.set('markets', 'KRW-BTC');
     const payload = await fetchJson<UpbitTickerResponse[]>(url.toString());
-    const data = payload[0];
+    const [data] = payload;
 
     return {
       symbol: 'BTC/KRW',
@@ -134,7 +134,7 @@ export class MarketStreamService {
     const url = new URL(UPBIT_ORDERBOOK_BASE_URL);
     url.searchParams.set('markets', 'KRW-BTC');
     const payload = await fetchJson<UpbitOrderbookResponse[]>(url.toString());
-    const data = payload[0];
+    const [data] = payload;
 
     return {
       bids: data.orderbook_units.map((unit) => ({

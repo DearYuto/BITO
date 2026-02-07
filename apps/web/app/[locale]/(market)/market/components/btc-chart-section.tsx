@@ -114,7 +114,7 @@ export const BtcChartSection = ({
     seriesRef.current = series;
     volumeSeriesRef.current = volumeSeries;
     const resizeObserver = new ResizeObserver((entries) => {
-      const entry = entries[0];
+      const [entry] = entries;
       if (!entry) return;
       chart.applyOptions({ width: entry.contentRect.width });
     });

@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
       }>;
     }>;
 
-    const data = payload[0];
+    const [data] = payload;
     if (!data) {
       return Response.json({ error: "No data" }, { status: 404 });
     }

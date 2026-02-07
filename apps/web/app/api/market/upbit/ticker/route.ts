@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
       acc_trade_price_24h: number;
     }>;
 
-    const data = payload[0];
+    const [data] = payload;
     if (!data) {
       return Response.json({ error: "No data" }, { status: 404 });
     }
