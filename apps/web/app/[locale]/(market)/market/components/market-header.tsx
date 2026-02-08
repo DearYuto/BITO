@@ -1,3 +1,6 @@
+import { Badge } from "@/components/ui/badge";
+import { Tag } from "@/components/ui/tag";
+
 type MarketHeaderProps = {
   title: string;
   isLoading: boolean;
@@ -10,10 +13,10 @@ const statusLabel = {
   disconnected: "Offline",
 } as const;
 
-const statusClasses = {
-  connected: "text-emerald-400",
-  connecting: "text-amber-400",
-  disconnected: "text-rose-400",
+const statusVariant = {
+  connected: "success",
+  connecting: "warning",
+  disconnected: "danger",
 } as const;
 
 export const MarketHeader = ({
@@ -22,20 +25,16 @@ export const MarketHeader = ({
   socketStatus,
 }: MarketHeaderProps) => (
   <header className="flex flex-col gap-2">
-    <p className="text-xs uppercase tracking-[0.2em] text-[var(--color-text-sub)]">
-      Market
-    </p>
+    <Tag>Market</Tag>
     <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between">
       <h1 className="text-3xl font-semibold tracking-tight text-[var(--color-text-main)]">
         {title}
       </h1>
       <div className="flex items-center gap-3 text-sm">
-        <span className="text-[var(--color-text-sub)]">
-          {isLoading ? "Loading" : "Live"}
-        </span>
-        <span className={`font-medium ${statusClasses[socketStatus]}`}>
+        <Badge variant="neutral">{isLoading ? "Loading" : "Live"}</Badge>
+        <Badge variant={statusVariant[socketStatus]}>
           {statusLabel[socketStatus]}
-        </span>
+        </Badge>
       </div>
     </div>
   </header>
