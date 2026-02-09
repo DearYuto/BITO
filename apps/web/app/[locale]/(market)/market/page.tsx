@@ -6,6 +6,7 @@ import { BtcChartSection } from "@/app/[locale]/(market)/market/components/btc-c
 import { LivePriceSection } from "@/app/[locale]/(market)/market/components/live-price-section";
 import { OrderbookSection } from "@/app/[locale]/(market)/market/components/orderbook-section";
 import { TickerSection } from "@/app/[locale]/(market)/market/components/ticker-section";
+import { TradeTapeSection } from "@/app/[locale]/(market)/market/components/trade-tape-section";
 import { PageShell } from "@/components/layout/page-shell";
 import { MARKET_SOURCE, type MarketSource } from "@/lib/api/market.types";
 import { useMarketData } from "@/lib/hooks/useMarketData";
@@ -15,10 +16,8 @@ export default function MarketPage() {
   const [source, setSource] = useState<MarketSource>(MARKET_SOURCE.BINANCE);
   const socketStatus = useMarketSocket(source);
   const enablePolling = socketStatus !== "connected";
-  const { ticker, orderbook, isLoading, error, lastUpdated } = useMarketData(
-    source,
-    enablePolling,
-  );
+  const { ticker, orderbook, trades, isLoading, error, lastUpdated } =
+    useMarketData(source, enablePolling);
 
   return (
     <PageShell>
@@ -48,6 +47,13 @@ export default function MarketPage() {
 
         <OrderbookSection
           orderbook={orderbook}
+          isLoading={isLoading}
+          error={error}
+          source={source}
+        />
+
+        <TradeTapeSection
+          trades={trades}
           isLoading={isLoading}
           error={error}
           source={source}
