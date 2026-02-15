@@ -24,10 +24,19 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: "bun run dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: true,
-    timeout: 120000,
-  },
+  webServer: [
+    {
+      command: "bun run dev",
+      url: "http://localhost:3000",
+      reuseExistingServer: true,
+      timeout: 120000,
+    },
+    {
+      command: "bun run start:dev",
+      url: "http://localhost:8000/health",
+      reuseExistingServer: true,
+      timeout: 120000,
+      cwd: "../api",
+    },
+  ],
 });

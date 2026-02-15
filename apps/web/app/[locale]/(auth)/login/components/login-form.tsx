@@ -35,8 +35,7 @@ export default function LoginForm() {
         );
       }
 
-      const token =
-        data?.accessToken ?? data?.token ?? data?.access_token ?? null;
+      const token = data?.accessToken ?? null;
 
       if (!token) {
         throw new Error("Login succeeded but no access token returned.");
@@ -52,7 +51,11 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit}>
+    <form
+      className="space-y-4"
+      data-testid="login-form"
+      onSubmit={handleSubmit}
+    >
       <div className="space-y-2">
         <label
           className="text-sm font-medium text-[var(--color-text-main)]"
@@ -61,6 +64,7 @@ export default function LoginForm() {
           Email
         </label>
         <input
+          data-testid="login-email"
           id="email"
           type="email"
           autoComplete="email"
@@ -79,6 +83,7 @@ export default function LoginForm() {
           Password
         </label>
         <input
+          data-testid="login-password"
           id="password"
           type="password"
           autoComplete="current-password"
@@ -90,18 +95,25 @@ export default function LoginForm() {
       </div>
 
       {error ? (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-200">
+        <div
+          className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-200"
+          data-testid="login-error"
+        >
           {error}
         </div>
       ) : null}
 
       {success ? (
-        <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200">
+        <div
+          className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-200"
+          data-testid="login-success"
+        >
           {success}
         </div>
       ) : null}
 
       <button
+        data-testid="login-submit"
         type="submit"
         disabled={isSubmitting}
         className="flex w-full items-center justify-center rounded-lg bg-gradient-to-r from-[var(--color-brand-500)] to-[var(--color-brand-700)] px-4 py-2 text-sm font-medium text-white shadow-[0_10px_28px_-14px_rgba(58,141,255,0.8)] transition hover:from-[var(--color-brand-300)] hover:to-[var(--color-brand-500)] disabled:cursor-not-allowed disabled:opacity-70"
